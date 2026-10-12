@@ -1,401 +1,753 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#08090c">
-<title>IVATHE — Голосование VIP</title>
-<style>
-:root {
-  --bg:#08090c;
-  --panel:#101217;
-  --panel2:#151820;
-  --line:#282c35;
-  --text:#f4f5f7;
-  --muted:#9299a7;
-  --blue:#8abaff;
-  --blue2:#437fc9;
-  --red:#ff666e;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  line-height:1.6
-}
-body:before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
-  background:radial-gradient(ellipse at 50% 0%,#17243b 0%,transparent 48%)
-}
-main{width:min(1040px,100% - 36px);margin:auto;padding:25px 0 45px}
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:15px;padding-bottom:20px;border-bottom:1px solid var(--line)
-}
-.brand{font-weight:900;letter-spacing:.16em;font-size:15px}
-.brand span{color:var(--blue)}
-.tag{
-  font-size:10px;text-transform:uppercase;letter-spacing:.12em;
-  border:1px solid #343a46;border-radius:30px;padding:7px 12px;color:#b5bdca
-}
-.hero{padding:48px 0 27px}
-.eyebrow{
-  color:var(--blue);font-size:11px;font-weight:800;
-  letter-spacing:.2em;text-transform:uppercase
-}
-h1{
-  font-size:clamp(38px,8vw,76px);line-height:.99;
-  letter-spacing:-.065em;margin:16px 0 20px;font-weight:950
-}
-h1 span{display:block;color:var(--blue)}
-.intro{max-width:700px;color:#aab1be;font-size:16px;line-height:1.8;margin:0}
-.card{
-  background:linear-gradient(145deg,#13161d,#0e1015);
-  border:1px solid var(--line);border-radius:20px;
-  padding:26px;margin-top:18px;
-  box-shadow:0 16px 50px #00000020
-}
-.label{
-  color:var(--blue);font-size:10px;font-weight:850;
-  letter-spacing:.17em;text-transform:uppercase;margin:0 0 13px
-}
-h2{font-size:24px;line-height:1.2;letter-spacing:-.035em;margin:0 0 12px}
-.muted{color:var(--muted)}
-.car-layout{
-  display:grid;grid-template-columns:1fr 1.12fr;
-  align-items:center;gap:24px
-}
-.car-copy p:not(.label){font-size:14px;color:var(--muted)}
-.car-frame{
-  min-width:0;overflow:hidden;border-radius:15px;
-  background:radial-gradient(ellipse at 50% 55%,#293b51,#11151d 68%);
-  border:1px solid #303b4a;min-height:250px;
-  display:flex;align-items:center;justify-content:center
-}
-.car-frame img{
-  display:block;width:100%;height:300px;object-fit:contain;
-  filter:drop-shadow(0 15px 22px #0009)
-}
-.car-caption{
-  color:#77879a;font-size:10px;letter-spacing:.16em;
-  text-transform:uppercase;margin-top:12px
-}
-.reasons{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.reason{
-  background:#0b0d12;border:1px solid var(--line);
-  border-radius:13px;padding:17px
-}
-.reason-num{font-size:11px;color:var(--blue);font-weight:900;letter-spacing:.1em}
-.reason p{font-size:13px;color:#b6bdc8;margin:9px 0 0}
-.vote-card{padding:clamp(20px,4vw,36px)}
-.vote-head{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:15px;margin-bottom:22px
-}
-.live{
-  display:flex;align-items:center;gap:7px;color:#a3acb9;
-  font-size:10px;letter-spacing:.1em;text-transform:uppercase
-}
-.dot{width:7px;height:7px;background:#70d8a0;border-radius:50%;box-shadow:0 0 12px #70d8a055}
-label{display:block;font-size:13px;font-weight:700;margin:16px 0 8px}
-input{
-  display:block;width:100%;padding:14px 15px;
-  background:#090b10;border:1px solid #303541;border-radius:11px;
-  color:white;font:inherit;outline:none
-}
-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #8abaff15}
-.vote{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
-.btn{
-  border:1px solid #343945;border-radius:11px;padding:15px 12px;
-  font:inherit;font-size:13px;font-weight:850;letter-spacing:.04em;
-  cursor:pointer;background:#191c24;color:#f4f5f7;
-  transition:transform .18s,border-color .18s,background .18s
-}
-.btn:hover{transform:translateY(-2px);border-color:var(--blue)}
-.btn.primary{background:var(--blue);border-color:var(--blue);color:#08111d}
-.btn.primary:hover{background:#b4d5ff}
-.btn:disabled{opacity:.55;cursor:wait;transform:none}
-.stats{
-  display:grid;grid-template-columns:1fr 1fr;gap:16px;
-  padding-top:24px;margin-top:25px;border-top:1px solid var(--line)
-}
-.stat-box{background:#0b0d12;border:1px solid var(--line);padding:17px;border-radius:12px}
-.stat-num{font-size:clamp(28px,5vw,42px);line-height:1.1;font-weight:900;letter-spacing:-.05em}
-.stat-name{font-size:11px;color:var(--muted);margin-top:7px}
-.bar{height:7px;background:#282c35;border-radius:20px;overflow:hidden;margin-top:16px}
-.fill{height:100%;width:0;background:linear-gradient(90deg,#437fc9,#a5d0ff);transition:width .3s}
-.toast{min-height:22px;color:var(--blue);font-size:13px;margin-top:13px;white-space:pre-wrap}
-.notice{font-size:11px;color:#7e8694;line-height:1.7;margin:18px 0 0}
-.admin-list{overflow-x:auto;margin-top:16px}
-table{width:100%;border-collapse:collapse;font-size:12px}
-th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);white-space:nowrap}
-th{color:var(--muted)}
-.hidden{display:none!important}
-.small{font-size:12px;color:var(--muted)}
-.footer{
-  border-top:1px solid var(--line);padding-top:22px;margin-top:30px;
-  color:#6f7785;font-size:11px;text-align:center
-}
-@media(max-width:650px){
-  main{width:calc(100% - 24px);padding-top:16px}
-  .hero{padding-top:37px}
-  .card{padding:19px;border-radius:15px}
-  .car-layout{grid-template-columns:1fr;gap:12px}
-  .car-frame{min-height:190px}
-  .car-frame img{height:220px}
-  .reasons{grid-template-columns:1fr}
-  .reason{padding:14px}
-  .vote{grid-template-columns:1fr}
-  .topbar{align-items:flex-start}
-  .tag{text-align:center}
-}
-</style>
-</head>
-<body>
-<main>
-  <div class="topbar">
-    <div class="brand">V<span>.</span> PETITION</div>
-    <div class="tag">Обращение к Steel</div>
-  </div>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090a0d">
+  <title>Петиция — Steel</title>
 
-  <header class="hero">
-    <div class="eyebrow">Community vote / 001</div>
-    <h1>СНЯТЬ <span>IVATHE</span> С VIP?</h1>
-    <p class="intro">
-      Уважаемый Steel! Предлагаем рассмотреть вопрос о снятии Ivathe
-      с VIP-статуса на вашем Twitch-канале в связи с чрезмерным спамом
-      в чате. Просим зрителей выразить свою позицию. Окончательное
-      решение остаётся исключительно за Steel.
-    </p>
-  </header>
-
-  <section class="card">
-    <div class="car-layout">
-      <div class="car-copy">
-        
-        <h2>BMW M5 G90</h2>
-        <p>
-          
-        </p>
-        <div class="car-caption">M performance · G90 010 steel</div>
-       <div style="width:100%; max-width:600px; margin:0 auto; overflow:hidden; border-radius:16px;">
-  <img src="https://raw.githubusercontent.com/subopustolet-tech/ivathe-petition/main/IMG_1439.jpeg" alt="BMW M5 G90" style="display:block; width:100%; height:auto;">
-</div>
-   
-      </div>
-    </div>
-  </section>
-
-  <section class="card">
-    <p class="label">Основания для голосования</p>
-    <div class="reasons">
-      <div class="reason">
-        <div class="reason-num">01 / CHAT</div>
-        <p>Поводом для обращения стал чрезмерный спам Ivathe в чате Steel на Twitch.</p>
-      </div>
-      <div class="reason">
-        <div class="reason-num">02 / COMMUNITY</div>
-        <p>Зрители могут высказать мнение, выбрав один из двух вариантов.</p>
-      </div>
-      <div class="reason">
-        <div class="reason-num">03 / DECISION</div>
-        <p>Результаты отражают мнение участников, но не заменяют решение Steel.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="card vote-card">
-    <div class="vote-head">
-      <div>
-        <p class="label">Голосование</p>
-        <h2>Как поступить со статусом VIP?</h2>
-      </div>
-      <div class="live"><span class="dot"></span> Голосование</div>
-    </div>
-
-    <form id="voteForm">
-      <label for="username">Твой Telegram @username</label>
-      <input id="username" name="username"
-        placeholder="@nickname" maxlength="33"
-        autocomplete="off" required>
-      <div class="vote">
-        <button class="btn primary" type="submit" data-vote="yes">СНЯТЬ</button>
-        <button class="btn" type="submit" data-vote="no">ОСТАВИТЬ</button>
-      </div>
-    </form>
-
-    <div class="stats">
-      <div class="stat-box">
-        <div class="stat-num" id="total">—</div>
-        <div class="stat-name">Всего голосов</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num" id="percent">—</div>
-        <div class="stat-name">За снятие VIP</div>
-      </div>
-    </div>
-    <div class="bar"><div class="fill" id="fill"></div></div>
-    <div class="toast" id="voteToast" aria-live="polite"></div>
-    <p class="notice">
-      Это сатирическое голосование, не связанное официально с Twitch,
-      Steel или Ivathe. Telegram-ник сам по себе не подтверждает личность.
-      Администратор сайта сможет видеть указанные ники и ответы.
-      Не вводи пароли и коды входа.
-    </p>
-  </section>
-
-  <section class="card">
-    <p class="label">Private access</p>
-    <h2>Администратор</h2>
-    <p class="muted" style="font-size:13px">
-      Вход для владельца сайта. Используй пароль, настроенный на сервере.
-    </p>
-    <div id="adminLogin">
-      <label for="adminPassword">Пароль администратора</label>
-      <input id="adminPassword" type="password"
-        placeholder="Пароль администратора" autocomplete="current-password">
-      <div style="margin-top:12px">
-        <button class="btn" id="loginBtn" type="button">Войти</button>
-      </div>
-    </div>
-    <div id="adminPanel" class="hidden">
-      <div class="vote-head">
-        <strong>Список голосов</strong>
-        <button class="btn" id="logoutBtn" type="button">Выйти</button>
-      </div>
-      <div class="admin-list">
-        <table>
-          <thead><tr><th>Telegram @username</th><th>Ответ</th><th>Время (UTC)</th></tr></thead>
-          <tbody id="votesBody"></tbody>
-        </table>
-      </div>
-      <p class="small" id="adminCount"></p>
-    </div>
-    <div class="toast" id="adminToast" aria-live="polite"></div>
-  </section>
-
-  <div class="footer">
-    Независимое развлекательное голосование<br>
-    Решение по VIP-статусу остаётся за Steel.
-  </div>
-</main>
-
-<script>
-let adminToken='';
-const $=id=>document.getElementById(id);
-
-async function api(path,opts={}){
-  const res=await fetch(path,{
-    ...opts,
-    headers:{
-      'Content-Type':'application/json',
-      ...(opts.headers||{}),
-      ...(adminToken?{'Authorization':'Bearer '+adminToken}:{})
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090a0d;
+      --card: #111318;
+      --border: #272a33;
+      --text: #f5f5f7;
+      --muted: #9297a5;
+      --accent: #d9dce5;
+      --red: #d94a50;
+      --green: #278a63;
     }
-  });
-  let data={};
-  try{data=await res.json()}catch{}
-  if(!res.ok)throw new Error(data.error||'Ошибка запроса');
-  return data;
-}
 
-async function loadStats(){
-  try{
-    const d=await api('/api/stats');
-    $('total').textContent=d.total;
-    const pct=d.total?Math.round(d.yes/d.total*100):0;
-    $('percent').textContent=pct+'%';
-    $('fill').style.width=pct+'%';
-  }catch{
-    $('total').textContent='—';
-    $('percent').textContent='—';
-    $('voteToast').textContent='Не удалось загрузить статистику. Проверь подключение сервера.';
-  }
-}
+    * {
+      box-sizing: border-box;
+    }
 
-$('voteForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  const username=$('username').value.trim();
-  const target=e.submitter?.dataset.vote||'yes';
-  const btns=document.querySelectorAll('[data-vote]');
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 50% -15%, #252936 0%, transparent 55%),
+        var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Arial, sans-serif;
+      min-height: 100vh;
+    }
 
-  if(!/^@?[A-Za-z0-9_]{5,32}$/.test(username)){
-    $('voteToast').textContent='Введи Telegram @username длиной 5–32 символа.';
-    return;
-  }
+    button, input {
+      font: inherit;
+    }
 
-  btns.forEach(b=>b.disabled=true);
-  $('voteToast').textContent='Отправляем голос…';
+    button {
+      cursor: pointer;
+    }
 
-  try{
-    const d=await api('/api/vote',{
-      method:'POST',
-      body:JSON.stringify({
-        username:username.replace(/^@/,'').toLowerCase(),
-        vote:target
-      })
-    });
-    $('voteToast').textContent=d.message||'Голос сохранён.';
-    $('username').value='';
-    await loadStats();
-  }catch(err){
-    $('voteToast').textContent=err.message;
-  }finally{
-    btns.forEach(b=>b.disabled=false);
-  }
-});
+    .container {
+      width: min(960px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 42px 0 30px;
+    }
 
-$('loginBtn').addEventListener('click',async()=>{
-  try{
-    const d=await api('/api/admin/login',{
-      method:'POST',
-      body:JSON.stringify({password:$('adminPassword').value})
-    });
-    adminToken=d.token;
-    $('adminPassword').value='';
-    $('adminLogin').classList.add('hidden');
-    $('adminPanel').classList.remove('hidden');
-    $('adminToast').textContent='Вход выполнен.';
-    await loadVotes();
-  }catch(e){
-    $('adminToast').textContent=e.message;
-  }
-});
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
 
-async function loadVotes(){
-  try{
-    const d=await api('/api/admin/votes');
-    $('votesBody').replaceChildren();
-    for(const v of d.votes){
-      const tr=document.createElement('tr');
-      const values=[
-        '@'+v.username,
-        v.vote==='yes'?'СНЯТЬ VIP':'ОСТАВИТЬ VIP',
-        new Date(v.createdAt).toLocaleString('ru-RU',{timeZone:'UTC'})+' UTC'
-      ];
-      for(const val of values){
-        const td=document.createElement('td');
-        td.textContent=val;
-        tr.appendChild(td);
+    .brand {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #e6e7ec;
+    }
+
+    .status {
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 8px 12px;
+      color: #b9bdc8;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      color: #a6aab6;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-size: clamp(34px, 7vw, 65px);
+      line-height: 1.04;
+      letter-spacing: -2.5px;
+      margin: 0 0 20px;
+      max-width: 780px;
+    }
+
+    .intro {
+      color: #a7abb6;
+      line-height: 1.8;
+      font-size: 15px;
+      max-width: 700px;
+      margin: 0;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #15171e, #0f1015);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 24px;
+      margin-top: 22px;
+      box-shadow: 0 18px 60px #00000024;
+    }
+
+    .section-label {
+      font-size: 11px;
+      color: #9da2b0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin: 0 0 18px;
+    }
+
+    .vote-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .car-photo {
+      display: block;
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 15px;
+      background: #090a0d;
+      border: 1px solid #292c35;
+    }
+
+    .vote-side h2 {
+      font-size: 25px;
+      letter-spacing: -0.7px;
+      margin: 0 0 10px;
+    }
+
+    .vote-side > p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      margin: 0 0 22px;
+    }
+
+    .field-label {
+      display: block;
+      color: #b9bdc8;
+      font-size: 12px;
+      margin-bottom: 9px;
+    }
+
+    .username, .password {
+      width: 100%;
+      min-height: 48px;
+      background: #090a0e;
+      border: 1px solid #30333d;
+      border-radius: 11px;
+      padding: 0 14px;
+      color: white;
+      outline: none;
+    }
+
+    .username:focus, .password:focus {
+      border-color: #8c93a5;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 13px;
+    }
+
+    .vote-btn {
+      min-height: 49px;
+      border-radius: 11px;
+      border: 1px solid #393d48;
+      background: #20232b;
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      transition: transform .15s, filter .15s;
+    }
+
+    .vote-btn:first-child {
+      background: #a9333b;
+      border-color: #bc4149;
+    }
+
+    .vote-btn:last-child {
+      background: #1c654d;
+      border-color: #287e60;
+    }
+
+    .vote-btn:hover {
+      filter: brightness(1.15);
+    }
+
+    .vote-btn:active {
+      transform: scale(.98);
+    }
+
+    .vote-btn:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
+
+    .message {
+      min-height: 20px;
+      margin-top: 13px;
+      font-size: 12px;
+      color: #c4c8d2;
+      line-height: 1.5;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      background: #0b0c11;
+      border: 1px solid #252832;
+      border-radius: 14px;
+      padding: 18px 12px;
+    }
+
+    .stat-name {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-size: clamp(25px, 5vw, 36px);
+      font-weight: 800;
+      margin-top: 9px;
+      letter-spacing: -1px;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+      margin: 18px 0 0;
+    }
+
+    .admin-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: #a6aab6;
+      border-radius: 10px;
+      padding: 10px 13px;
+      font-size: 12px;
+    }
+
+    .admin-area {
+      display: none;
+      margin-top: 16px;
+    }
+
+    .admin-area.visible {
+      display: block;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .secondary-btn {
+      border: 1px solid #363a45;
+      background: #20232b;
+      color: white;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 12px;
+    }
+
+    .votes-list {
+      overflow-x: auto;
+      margin-top: 18px;
+    }
+
+    .votes-list table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    .votes-list th, .votes-list td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #292c35;
+      white-space: nowrap;
+    }
+
+    .votes-list th {
+      color: #a6aab6;
+      font-weight: 600;
+    }
+
+    .footer {
+      text-align: center;
+      color: #696e7b;
+      font-size: 11px;
+      line-height: 1.8;
+      padding: 30px 10px 0;
+    }
+
+    @media (max-width: 650px) {
+      .container {
+        padding-top: 26px;
       }
-      $('votesBody').appendChild(tr);
+
+      .topline {
+        margin-bottom: 28px;
+      }
+
+      .card {
+        padding: 17px;
+        border-radius: 17px;
+      }
+
+      .vote-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .car-photo {
+        height: 220px;
+      }
+
+      .stats {
+        gap: 7px;
+      }
+
+      .stat {
+        padding: 14px 9px;
+      }
+
+      .stat-name {
+        font-size: 9px;
+        letter-spacing: .5px;
+      }
+
+      .intro {
+        font-size: 14px;
+      }
+
+      h1 {
+        letter-spacing: -1.5px;
+      }
     }
-    $('adminCount').textContent='Всего записей: '+d.votes.length;
-  }catch(e){
-    $('adminToast').textContent=e.message;
-  }
-}
+  </style>
+</head>
 
-$('logoutBtn').addEventListener('click',()=>{
-  adminToken='';
-  $('adminPanel').classList.add('hidden');
-  $('adminLogin').classList.remove('hidden');
-  $('adminToast').textContent='Вы вышли.';
-});
+<body>
+  <main class="container">
+    <header class="topline">
+      <div class="brand">STEEL COMMUNITY</div>
+      <div class="status">Открытое голосование</div>
+    </header>
 
-loadStats();
-</script>
+    <section class="hero">
+      <div class="eyebrow">Обращение к Steel</div>
+      <h1>Пора решить вопрос.</h1>
+      <p class="intro">
+        В связи с регулярным спамом со стороны Ivathe в чате Steel
+        предлагается вынести ситуацию на открытое голосование.
+        Сообщество может высказать своё мнение, а окончательное решение
+        остаётся за Steel.
+      </p>
+    </section>
+
+    <section class="card">
+      <p class="section-label">Голосование</p>
+
+      <div class="vote-layout">
+        <div>
+          <img
+            class="car-photo"
+            src="https://raw.githubusercontent.com/subopustolet-tech/ivathe-petition/main/IMG_1439.jpeg"
+            alt="BMW M5 G90"
+          >
+        </div>
+
+        <div class="vote-side">
+          <h2>Как поступить с Ivathe?</h2>
+          <p>
+            Выбери один из вариантов. Введи свой Telegram-ник
+            и отправь голос.
+          </p>
+
+          <label class="field-label" for="username">
+            Твой Telegram-ник
+          </label>
+
+          <input
+            class="username"
+            id="username"
+            type="text"
+            maxlength="33"
+            placeholder="@username"
+            autocomplete="off"
+          >
+
+          <div class="buttons">
+            <button class="vote-btn" id="removeBtn" type="button">
+              СНЯТЬ
+            </button>
+            <button class="vote-btn" id="keepBtn" type="button">
+              ОСТАВИТЬ
+            </button>
+          </div>
+
+          <div class="message" id="voteMessage" role="status"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <p class="section-label">Результаты голосования</p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-name">Всего голосов</div>
+          <div class="stat-value" id="totalVotes">—</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-name">Снять</div>
+          <div class="stat-value" id="removeVotes">—</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-name">Оставить</div>
+          <div class="stat-value" id="keepVotes">—</div>
+        </div>
+      </div>
+
+      <p class="note">
+        Голосование отражает мнение участников и не заменяет
+        окончательное решение Steel.
+      </p>
+    </section>
+
+    <section class="card">
+      <button class="admin-toggle" id="adminToggle" type="button">
+        Админ-панель
+      </button>
+
+      <div class="admin-area" id="adminArea">
+        <p class="section-label">Вход администратора</p>
+
+        <label class="field-label" for="adminPassword">
+          Пароль администратора
+        </label>
+
+        <input
+          class="password"
+          id="adminPassword"
+          type="password"
+          placeholder="Введи пароль"
+          autocomplete="current-password"
+        >
+
+        <div class="admin-actions">
+          <button class="secondary-btn" id="loginBtn" type="button">
+            Войти
+          </button>
+          <button class="secondary-btn" id="refreshBtn" type="button"
+            hidden>
+            Обновить голоса
+          </button>
+          <button class="secondary-btn" id="logoutBtn" type="button"
+            hidden>
+            Выйти
+          </button>
+        </div>
+
+        <div class="message" id="adminMessage" role="status"></div>
+        <div class="votes-list" id="votesList"></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Независимое голосование сообщества.<br>
+      Итоговое решение остаётся за Steel.
+    </footer>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    let adminToken = null;
+
+    const usernamePattern = /^@?[A-Za-z0-9_]{5,32}$/;
+
+    async function readResponse(response) {
+      const text = await response.text();
+
+      try {
+        return text ? JSON.parse(text) : {};
+      } catch {
+        return { message: text || "Не удалось прочитать ответ сервера." };
+      }
+    }
+
+    async function loadStats() {
+      try {
+        const response = await fetch("/api/stats", {
+          cache: "no-store"
+        });
+
+        const data = await readResponse(response);
+
+        if (!response.ok) {
+          throw new Error(data.message || "Не удалось загрузить статистику.");
+        }
+
+        const total = Number(data.total) || 0;
+        const remove = Number(data.yes) || 0;
+        const keep = Math.max(0, total - remove);
+
+        $("totalVotes").textContent = total;
+        $("removeVotes").textContent = remove;
+        $("keepVotes").textContent = keep;
+      } catch (error) {
+        $("totalVotes").textContent = "—";
+        $("removeVotes").textContent = "—";
+        $("keepVotes").textContent = "—";
+        console.error("Stats error:", error);
+      }
+    }
+
+    async function castVote(vote) {
+      const message = $("voteMessage");
+      const usernameInput = $("username");
+      const username = usernameInput.value.trim();
+
+      if (!usernamePattern.test(username)) {
+        message.textContent =
+          "Введи корректный Telegram-ник: от 5 до 32 символов, латиница, цифры и _.";
+        return;
+      }
+
+      const buttons = [$("removeBtn"), $("keepBtn")];
+      buttons.forEach((button) => button.disabled = true);
+      message.textContent = "Отправляем голос…";
+
+      try {
+        const response = await fetch("/api/vote", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username: username,
+            vote: vote
+          })
+        });
+
+        const data = await readResponse(response);
+
+        if (!response.ok) {
+          throw new Error(
+            data.message || data.error || "Сервер не принял голос."
+          );
+        }
+
+        message.textContent = "Голос принят. Спасибо!";
+        await loadStats();
+      } catch (error) {
+        message.textContent = error.message ||
+          "Ошибка отправки. Попробуй ещё раз.";
+      } finally {
+        buttons.forEach((button) => button.disabled = false);
+      }
+    }
+
+    $("removeBtn").addEventListener("click", () => {
+      castVote("yes");
+    });
+
+    $("keepBtn").addEventListener("click", () => {
+      castVote("no");
+    });
+
+    $("username").addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        castVote("yes");
+      }
+    });
+
+    $("adminToggle").addEventListener("click", () => {
+      $("adminArea").classList.toggle("visible");
+    });
+
+    async function loadAdminVotes() {
+      if (!adminToken) return;
+
+      $("adminMessage").textContent = "Загружаем голоса…";
+
+      try {
+        const response = await fetch("/api/admin/votes", {
+          headers: {
+            "Authorization": "Bearer " + adminToken
+          },
+          cache: "no-store"
+        });
+
+        const data = await readResponse(response);
+
+        if (!response.ok) {
+          if (response.status === 401 || response.status === 403) {
+            adminToken = null;
+            updateAdminUI(false);
+          }
+
+          throw new Error(
+            data.message || data.error || "Не удалось загрузить голоса."
+          );
+        }
+
+        const votes = Array.isArray(data.votes) ? data.votes : [];
+        const table = document.createElement("table");
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+
+        ["Telegram-ник", "Голос", "Дата"].forEach((title) => {
+          const th = document.createElement("th");
+          th.textContent = title;
+          headerRow.appendChild(th);
+        });
+
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement("tbody");
+
+        votes.forEach((item) => {
+          const row = document.createElement("tr");
+          const usernameCell = document.createElement("td");
+          const voteCell = document.createElement("td");
+          const dateCell = document.createElement("td");
+
+          usernameCell.textContent = item.username || "—";
+          voteCell.textContent =
+            item.vote === "yes" ? "Снять" :
+            item.vote === "no" ? "Оставить" :
+            String(item.vote || "—");
+
+          if (item.createdAt) {
+            const date = new Date(item.createdAt);
+            dateCell.textContent = Number.isNaN(date.getTime())
+              ? String(item.createdAt)
+              : date.toLocaleString("ru-RU");
+          } else {
+            dateCell.textContent = "—";
+          }
+
+          row.append(usernameCell, voteCell, dateCell);
+          tbody.appendChild(row);
+        });
+
+        table.appendChild(tbody);
+
+        const wrapper = $("votesList");
+        wrapper.replaceChildren(table);
+
+        $("adminMessage").textContent =
+          "Загружено голосов: " + votes.length;
+      } catch (error) {
+        $("adminMessage").textContent = error.message ||
+          "Ошибка загрузки голосов.";
+      }
+    }
+
+    function updateAdminUI(isLoggedIn) {
+      $("loginBtn").hidden = isLoggedIn;
+      $("adminPassword").hidden = isLoggedIn;
+      $("refreshBtn").hidden = !isLoggedIn;
+      $("logoutBtn").hidden = !isLoggedIn;
+    }
+
+    $("loginBtn").addEventListener("click", async () => {
+      const password = $("adminPassword").value;
+
+      if (!password) {
+        $("adminMessage").textContent = "Введи пароль.";
+        return;
+      }
+
+      $("adminMessage").textContent = "Проверяем пароль…";
+      $("loginBtn").disabled = true;
+
+      try {
+        const response = await fetch("/api/admin/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ password: password })
+        });
+
+        const data = await readResponse(response);
+
+        if (!response.ok || !data.token) {
+          throw new Error(
+            data.message || data.error || "Неверный пароль."
+          );
+        }
+
+        adminToken = data.token;
+        $("adminPassword").value = "";
+        updateAdminUI(true);
+        await loadAdminVotes();
+      } catch (error) {
+        $("adminMessage").textContent = error.message ||
+          "Не удалось войти.";
+      } finally {
+        $("loginBtn").disabled = false;
+      }
+    });
+
+    $("refreshBtn").addEventListener("click", loadAdminVotes);
+
+    $("logoutBtn").addEventListener("click", () => {
+      adminToken = null;
+      $("votesList").replaceChildren();
+      $("adminMessage").textContent = "Ты вышел из админ-панели.";
+      updateAdminUI(false);
+    });
+
+    loadStats();
+  </script>
 </body>
 </html>
